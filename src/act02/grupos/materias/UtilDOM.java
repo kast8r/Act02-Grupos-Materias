@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -94,5 +95,21 @@ public class UtilDOM {
         hijo.setTextContent(texto);
         NodeList nl = doc.getElementsByTagName(padre.getTagName());
         nl.item(0).appendChild(hijo);
+    }
+    
+    public String getValorElemento(Document doc, Element elem, String etiqueta) {
+        String result = null;
+        
+        return result;
+    }
+    
+    public Node buscarElemento(Document doc, String etiqueta, String valor){
+        Node result = null;
+        
+        return result;
+    }
+    
+    public void crearAtributo(String nombreAtr, String valorAtr, Element elem, Document doc){
+        
     }
 }
