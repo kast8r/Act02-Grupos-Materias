@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package act02.grupos.materias;
+package Controlador;
 
 import java.io.File;
 import java.io.IOException;
@@ -212,18 +212,18 @@ public class UtilDOM {
     
     public String dom2String(Document doc){
         StringWriter sw;
-        
-    try {
-        sw = new StringWriter();
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.transform(new DOMSource(doc), new StreamResult(sw));
-   
-    } catch (TransformerException ex) {
-        throw new RuntimeException("Error converting to String", ex);
+
+        try {
+            sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+
+        } catch (TransformerException ex) {
+            throw new RuntimeException("Error converting to String", ex);
+        }
+        return sw.toString();
     }
-    return sw.toString();
-}
     
    
    
