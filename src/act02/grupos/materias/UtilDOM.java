@@ -19,8 +19,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -32,19 +35,29 @@ public class UtilDOM {
     
     public Document crearDOM() {
         Document result = null;
-        //mamawebo
+        try {
+            
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            
+            Document doc = docBuilder.newDocument();
+            result = doc;
+            return result;
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
     
     public Document crearRaiz(Document doc, String etiquetaRaiz) {
-        Document result = null;
-        
-        return result;
+        Element rootElement = doc.createElement(etiquetaRaiz);
+        doc.appendChild(rootElement);
+        return doc;
     }
         
     public Element getRaiz(Document doc) {
         Element result = null;
-        
+        result = doc.getDocumentElement();
         return result;
     }
     
@@ -56,7 +69,10 @@ public class UtilDOM {
      * @param doc 
      */
     public void crearElemento(String etiqueta, Element padre, Document doc){
-        
+        Element hijo = doc.createElement(etiqueta);
+        NodeList nl = doc.getElementsByTagName(padre.getTagName());
+        nl.item(0).appendChild(hijo);
+                
     }
     
     
@@ -68,7 +84,10 @@ public class UtilDOM {
      * @param doc 
      */
     public void crearElemento (String etiqueta, String texto, Element padre, Document doc){
-        
+        Element hijo = doc.createElement(etiqueta);
+        hijo.setTextContent(texto);
+        NodeList nl = doc.getElementsByTagName(padre.getTagName());
+        nl.item(0).appendChild(hijo);
     }
     
     
@@ -81,6 +100,28 @@ public class UtilDOM {
      * @param doc 
      */
     public void crearElemento (String etiqueta, String texto, String atributo, String textoAtr, Element padre,Document doc) {
+        Element hijo = doc.createElement(etiqueta);
+        Attr attr = doc.createAttribute(atributo);
+        attr.setValue(textoAtr);
+        hijo.setAttributeNode(attr);
+        hijo.setTextContent(texto);
+        NodeList nl = doc.getElementsByTagName(padre.getTagName());
+        nl.item(0).appendChild(hijo);
+    }
+    
+    public String getValorElemento(Document doc, Element elem, String etiqueta) {
+        String result = null;
+        
+        return result;
+    }
+    
+    public Node buscarElemento(Document doc, String etiqueta, String valor){
+        Node result = null;
+        
+        return result;
+    }
+    
+    public void crearAtributo(String nombreAtr, String valorAtr, Element elem, Document doc){
         
     }
     
@@ -140,7 +181,7 @@ public class UtilDOM {
     
    
    
-    public Document string2Dom(String documentoXML){
+    public Document string2Dom(String documentoXML) throws SAXException{
         Document doc = null;
         
         try {
@@ -154,9 +195,7 @@ public class UtilDOM {
             transformer.transform(source, result);
             String str1 = result.getWriter().toString();
        
-            
-            
-            
+                  
             
            
         } catch (TransformerException ex) {
