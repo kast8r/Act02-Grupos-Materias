@@ -33,6 +33,10 @@ import org.xml.sax.SAXException;
  */
 public class UtilDOM {
     
+    /**
+     * Devuelve un documento en blanco
+     * @return 
+     */
     public Document crearDOM() {
         Document result = null;
         try {
@@ -49,12 +53,23 @@ public class UtilDOM {
         return result;
     }
     
+    /**
+     * Crea un elemento raiz en un elemento
+     * @param doc
+     * @param etiquetaRaiz
+     * @return 
+     */
     public Document crearRaiz(Document doc, String etiquetaRaiz) {
         Element rootElement = doc.createElement(etiquetaRaiz);
         doc.appendChild(rootElement);
         return doc;
     }
         
+    /**
+     * Devuelve el elemento raiz del documento
+     * @param doc
+     * @return 
+     */
     public Element getRaiz(Document doc) {
         Element result = null;
         result = doc.getDocumentElement();
@@ -96,6 +111,8 @@ public class UtilDOM {
      * Crea un element con texto y con un atributo
      * @param etiqueta
      * @param texto
+     * @param atributo
+     * @param textoAtr
      * @param padre
      * @param doc 
      */
@@ -109,20 +126,49 @@ public class UtilDOM {
         nl.item(0).appendChild(hijo);
     }
     
-    public String getValorElemento(Document doc, Element elem, String etiqueta) {
+    /**
+     * Devuleve el valor de un elemento
+     * @param doc
+     * @param elem
+     * @return 
+     */
+    public String getValorElemento(Document doc, Element elem) {
         String result = null;
-        
+        NodeList nl = doc.getElementsByTagName(elem.getTagName());
+        result = nl.item(0).getNodeValue();
         return result;
+        //TODO
     }
     
+    /**
+     * Busca un elemento con un cierto valor
+     * @param doc
+     * @param etiqueta
+     * @param valor
+     * @return 
+     */
     public Node buscarElemento(Document doc, String etiqueta, String valor){
         Node result = null;
-        
+        NodeList nl = doc.getElementsByTagName(etiqueta);
+        for (int i = 0; i < nl.getLength(); i++) {
+            if (nl.item(i).getNodeValue().equals(valor)) {
+                result = nl.item(i);
+            }
+        }
         return result;
     }
     
+    /**
+     * Crea un atributo dentro de un elemento específico
+     * @param nombreAtr
+     * @param valorAtr
+     * @param elem
+     * @param doc 
+     */
     public void crearAtributo(String nombreAtr, String valorAtr, Element elem, Document doc){
-        
+        Attr attr = doc.createAttribute(nombreAtr);
+        attr.setValue(valorAtr);
+        elem.setAttributeNode(attr);
     }
     
     public  Document xml2dom (String nombreArchivoXML){ 
