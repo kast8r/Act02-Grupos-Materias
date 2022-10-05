@@ -65,7 +65,43 @@ public class UtilFTexto {
         
                 
            return result;
-        }  
+        }
+            
+           
+    public String[] leerTxt(String fichero, String separador){
+    FileReader fr=null;
+    BufferedReader br=null;
+    String[] result=null;
+    String linea=null;      
+    
+    
+             try {   
+                 int cont = 0;
+                 fr=new FileReader(fichero);
+                 br=new BufferedReader(fr);
+                 result = new String[br.readLine().length()+1];
+                 
+             while ((linea=br.readLine()) != null){      
+                 result[cont]=linea+separador;
+                 cont++;
+            }
+            br.close();
+            
+            } catch (FileNotFoundException ex) {
+            Logger.getLogger(UtilFTexto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UtilFTexto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
+    
+    return result;
+    }
+    
+    
+   
+    
+    
     }
 
            

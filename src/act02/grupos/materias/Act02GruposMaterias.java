@@ -4,6 +4,8 @@
  */
 package act02.grupos.materias;
 
+import java.util.Arrays;
+
 /**
  *
  * @author usumaniana
@@ -14,7 +16,11 @@ public class Act02GruposMaterias {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("prueba");
+        String fichero = "./prueba.txt";
+        String separador = ";";
+        UtilFTexto utf1 = new UtilFTexto();
+        
+      
     }
     
 }
