@@ -4,8 +4,25 @@
  */
 package act02.grupos.materias;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -66,4 +83,92 @@ public class UtilDOM {
     public void crearElemento (String etiqueta, String texto, String atributo, String textoAtr, Element padre,Document doc) {
         
     }
+    
+    public  Document xml2dom (String nombreArchivoXML){ 
+    File filexml;
+    Document doc = null;
+    DocumentBuilder db;
+        try {
+            filexml=new File(nombreArchivoXML);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            db = dbf.newDocumentBuilder();           
+            doc = db.parse(filexml);
+            
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   
+    
+    
+            return doc;
+    }
+    
+    
+    public void dom2xml(Document doc, String nombreFicheroXML){
+        
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(nombreFicheroXML));       
+            transformer.transform(source, result);
+            
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
+    
+    }
+    
+    public String dom2String(Document doc){
+        StringWriter sw;
+        
+    try {
+        sw = new StringWriter();
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(sw));
+   
+    } catch (TransformerException ex) {
+        throw new RuntimeException("Error converting to String", ex);
+    }
+    return sw.toString();
+}
+    
+   
+   
+    public Document string2Dom(String documentoXML){
+        Document doc = null;
+        
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+             doc = builder.parse(new InputSource(new StringReader(documentoXML)));
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result =  new StreamResult(new StringWriter());
+            transformer.transform(source, result);
+            String str1 = result.getWriter().toString();
+       
+            
+            
+            
+            
+           
+        } catch (TransformerException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(UtilDOM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      return doc;
+    }
+    
 }
