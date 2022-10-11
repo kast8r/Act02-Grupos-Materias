@@ -53,6 +53,7 @@ public class UtilDOM {
         return result;
     }
     
+
     /**
      * Crea un elemento raiz en un elemento
      * @param doc
@@ -71,7 +72,7 @@ public class UtilDOM {
      * @return 
      */
     public Element getRaiz(Document doc) {
-        Element result = null;
+        Element result;
         result = doc.getDocumentElement();
         return result;
     }
