@@ -5,6 +5,8 @@
 package Vista;
 
 import Controlador.UtilDOM;
+import Modelo.Curso;
+import Modelo.Materia;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -158,6 +160,16 @@ public class GUI extends javax.swing.JFrame {
         NodeList listas =  raiz.getElementsByTagName("listasal");
         
         List<Node> grupos = new ArrayList();
+        List<Node> materias = new ArrayList();
+        
+
+        for (int i = 0; i < listas.getLength(); i++) {
+            NamedNodeMap nnm = listas.item(i).getAttributes();
+            if (nnm.item(0).getNodeValue().contains("MATERIAS_")) {
+                
+                materias.add(listas.item(i));
+            }
+        }
         
         for (int i = 0; i < listas.getLength(); i++) {
             NamedNodeMap nnm = listas.item(i).getAttributes();
@@ -169,12 +181,26 @@ public class GUI extends javax.swing.JFrame {
         
         for (int i = 0; i < grupos.size(); i++) {
             Node nNode = grupos.get(i);
+            Curso c = new Curso();
             if(nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
+                
+                c.setCodigoCurso(Integer.valueOf(eElement.getElementsByTagName("salida").item(2).getTextContent()));
+                c.setNombre(eElement.getElementsByTagName("salida").item(1).getTextContent());
+                c.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(0).getTextContent()));
+            }
+            for (int j = 0; j < materias.size(); j++) {
+                Node nNodeM = materias.get(i);
+                Materia m = new Materia(); 
+                if(nNodeM.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNodeM;
+                    m.setNombre(eElement.getElementsByTagName("salida").item(0).getTextContent());
+                    m.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(1).getTextContent()));
+                    m.setAbreviatura(eElement.getElementsByTagName("salida").item(2).getTextContent());
+                }
+                
 
-                System.out.println("CLAVE: "  + eElement.getElementsByTagName("salida").item(0).getTextContent());
-                System.out.println("NOMBRE: "  + eElement.getElementsByTagName("salida").item(1).getTextContent());
-                System.out.println("CODIGO_CURSO: "  + eElement.getElementsByTagName("salida").item(2).getTextContent());
+                
             }
 
             

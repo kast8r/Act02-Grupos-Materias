@@ -11,23 +11,31 @@ import java.util.List;
  * @author usumaniana
  */
 public class Curso {
-    String descripcionCurso, abreviatura, departamento;
-    int codigoCurso;
+    String descripcionCurso, abreviatura, departamento, nombre;
+    int codigoCurso, clave;
     List<Grupo> grupos;
     List<Materia> materias;
-    
-    public Curso(String descripcionCurso, String abreviatura, String departamento, int codigoCurso, List<Grupo> grupos, List<Materia> materias) {
-        this.descripcionCurso = descripcionCurso;
-        this.abreviatura = abreviatura;
-        this.departamento = departamento;
-        this.codigoCurso = codigoCurso;
-        this.grupos = grupos;
-        this.materias = materias;
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
     
 
+
     public void setDescripcionCurso(String descripcionCurso) {
         this.descripcionCurso = descripcionCurso;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setAbreviatura(String abreviatura) {

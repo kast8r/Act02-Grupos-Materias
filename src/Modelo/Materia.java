@@ -12,11 +12,7 @@ public class Materia {
     String nombre,abreviatura;
     int clave;
 
-    public Materia(String nombre, String abreviatura, int clave) {
-        this.nombre = nombre;
-        this.abreviatura = abreviatura;
-        this.clave = clave;
-    }
+
 
     public String getNombre() {
         return nombre;
