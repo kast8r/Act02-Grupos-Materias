@@ -39,7 +39,7 @@ public class GUI extends javax.swing.JFrame {
         lst_cursos.setModel(dlmCurso);
         lst_grupos.setModel(dlmGrupo);
         lst_materias.setModel(dlmMateria);
-        añadirCursos(listaCursos);
+        añadirCursos(listaCursos,"ExportacionGRUPOS-MATERIAS.xml");
         
         for (int i = 0; i < listaCursos.size(); i++) {
             Curso c = listaCursos.get(i);
@@ -50,10 +50,14 @@ public class GUI extends javax.swing.JFrame {
     }
     
 
-    
-    private void añadirCursos(List<Curso> listaGrupos){
+    /**
+     * 
+     * @param listaGrupos
+     * @param ruta 
+     */
+    private void añadirCursos(List<Curso> listaGrupos, String ruta){
         UtilDOM u = new UtilDOM();
-        Document doc = u.xml2dom("ExportacionGRUPOS-MATERIAS.xml");
+        Document doc = u.xml2dom(ruta);
         doc.normalize();
         Element raiz = doc.getDocumentElement();
         NodeList listas =  raiz.getElementsByTagName("listasal");
@@ -229,16 +233,15 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane3)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
