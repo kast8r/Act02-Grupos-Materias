@@ -6,6 +6,7 @@ package Vista;
 
 import Controlador.UtilDOM;
 import Modelo.Curso;
+import Modelo.Grupo;
 import Modelo.Materia;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class GUI extends javax.swing.JFrame {
     DefaultListModel dlmCurso;
     DefaultListModel dlmGrupo;
     DefaultListModel dlmMateria;
-    
+    List<Curso> listaCursos = new ArrayList();
     
     
     public GUI() {
@@ -38,7 +39,19 @@ public class GUI extends javax.swing.JFrame {
         lst_cursos.setModel(dlmCurso);
         lst_grupos.setModel(dlmGrupo);
         lst_materias.setModel(dlmMateria);
+        añadirCursos(listaCursos);
         
+        for (int i = 0; i < listaCursos.size(); i++) {
+            Curso c = listaCursos.get(i);
+            dlmCurso.addElement(c);
+        }
+
+               
+    }
+    
+
+    
+    private void añadirCursos(List<Curso> listaGrupos){
         UtilDOM u = new UtilDOM();
         Document doc = u.xml2dom("ExportacionGRUPOS-MATERIAS.xml");
         doc.normalize();
@@ -78,6 +91,7 @@ public class GUI extends javax.swing.JFrame {
                 
                 
             }
+            
             for (int j = 0; j < materias.size(); j++) {
                 Node nNodeM = materias.get(j);
                 Materia m = new Materia(); 
@@ -97,14 +111,37 @@ public class GUI extends javax.swing.JFrame {
                             otrosDatosAñadidos = true;
                         }
                     }
+                    
                 }
-
-
             }
-            dlmCurso.addElement(c);
+            if (!listaGrupos.isEmpty()) {
+                for (int j = 0; j < listaGrupos.size(); j++) {
+                    Curso cac = listaGrupos.get(j);
+                    if (c.getCodigoCurso() == cac.getCodigoCurso() && !c.getNombre().equals(cac.getNombre())) {
+                        Grupo g1 = new Grupo(cac.getNombre());
+                        Grupo g2 = new Grupo(c.getNombre());
+                        cac.addGrupos(g1);
+                        cac.addGrupos(g2);
+                        char lastChar = cac.getNombre().charAt(cac.getNombre().length()-1);
+                        if (!Character.isDigit(lastChar)) {
+                            cac.setNombre(cac.getNombre().substring(0, cac.getNombre().length() - 1));
+                        }
+                        listaGrupos.set(j, cac);
+
+                        
+
+                    }else if(j == listaGrupos.size()-1){
+                        listaGrupos.add(c);
+                        break;
+                    }
+                }
+            } else {
+                listaGrupos.add(c);
+            }
+            
+
           
         }
-               
     }
 
     /**
@@ -222,9 +259,14 @@ public class GUI extends javax.swing.JFrame {
 
     private void lst_cursosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lst_cursosValueChanged
         refrescarMaterias();
+        refrescarGrupos();
     }//GEN-LAST:event_lst_cursosValueChanged
 
-    
+    private void refrescarGrupos() {
+        dlmGrupo.clear();
+        Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+        dlmGrupo.addAll(c.getGrupos());
+    }
     private void refrescarMaterias(){
         dlmMateria.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());

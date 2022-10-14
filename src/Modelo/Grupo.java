@@ -21,7 +21,7 @@ public class Grupo {
 
     @Override
     public String toString() {
-        return "Grupo{" + "nombre=" + nombre + '}';
+        return   nombre;
     }
 
     public Grupo(String nombre) {

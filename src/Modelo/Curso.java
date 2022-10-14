@@ -93,6 +93,10 @@ public class Curso {
     public void addMaterias(Materia materia) {
         this.materias.add(materia);
     }
+    
+    public void addGrupos(Grupo grupo) {
+        this.grupos.add(grupo);
+    }
 
     public List<Materia> getMaterias() {
         return materias;
