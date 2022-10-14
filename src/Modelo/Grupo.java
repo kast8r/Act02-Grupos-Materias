@@ -4,11 +4,13 @@
  */
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author usumaniana
  */
-public class Grupo {
+public class Grupo  implements Serializable {
     String nombre;
 
     public String getNombre() {

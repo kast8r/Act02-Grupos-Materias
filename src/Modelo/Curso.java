@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author usumaniana
  */
-public class Curso {
+public class Curso implements Serializable {
     String descripcionCurso, abreviatura, departamento, nombre, abreviaturaCurso;
     int codigoCurso, clave;
     List<Grupo> grupos = new ArrayList();

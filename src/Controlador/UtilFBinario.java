@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class UtilFBinario {
     
-    public static void guardarObjeto(Object Objeto, String nombreFichero){
+    public  void guardarObjeto(Object Objeto, String nombreFichero){
     File fichero = new File (nombreFichero);
     FileOutputStream fos = null;
     ObjectOutputStream salida = null;
@@ -52,10 +52,11 @@ public class UtilFBinario {
         
         
         }
+        
     
     }
     
-    public static Object leerObjeto(String nombreFichero){
+    public  Object leerObjeto(String nombreFichero){
     File fichero = new File (nombreFichero);
     FileInputStream fis = null;
     ObjectInputStream ois = null;

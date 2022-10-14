@@ -4,11 +4,13 @@
  */
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author usumaniana
  */
-public class Materia {
+public class Materia  implements Serializable {
     String nombre,abreviatura;
     int clave;
 
