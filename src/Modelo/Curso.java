@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,23 +12,40 @@ import java.util.List;
  * @author usumaniana
  */
 public class Curso {
-    String descripcionCurso, abreviatura, departamento;
-    int codigoCurso;
-    List<Grupo> grupos;
-    List<Materia> materias;
+    String descripcionCurso, abreviatura, departamento, nombre, abreviaturaCurso;
+    int codigoCurso, clave;
+    List<Grupo> grupos = new ArrayList();
+    List<Materia> materias = new ArrayList();
     
-    public Curso(String descripcionCurso, String abreviatura, String departamento, int codigoCurso, List<Grupo> grupos, List<Materia> materias) {
-        this.descripcionCurso = descripcionCurso;
-        this.abreviatura = abreviatura;
-        this.departamento = departamento;
-        this.codigoCurso = codigoCurso;
-        this.grupos = grupos;
-        this.materias = materias;
+    public String getAbreviaturaCurso() {
+        return abreviaturaCurso;
+    }
+
+    public void setAbreviaturaCurso(String abreviaturaCurso) {
+        this.abreviaturaCurso = abreviaturaCurso;
+    }
+
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
     }
     
 
+
     public void setDescripcionCurso(String descripcionCurso) {
         this.descripcionCurso = descripcionCurso;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setAbreviatura(String abreviatura) {
@@ -68,11 +86,11 @@ public class Curso {
 
     @Override
     public String toString() {
-        return "Curso{" + "descripcionCurso=" + descripcionCurso + ", abreviatura=" + abreviatura + ", departamento=" + departamento + ", codigoCurso=" + codigoCurso + ", grupos=" + grupos + ", materias=" + materias + '}';
+        return " " + nombre;
     }
 
-    public void setMaterias(List<Materia> materias) {
-        this.materias = materias;
+    public void addMaterias(Materia materia) {
+        this.materias.add(materia);
     }
 
     public List<Materia> getMaterias() {

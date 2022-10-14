@@ -4,7 +4,18 @@
  */
 package Vista;
 
+import Controlador.UtilDOM;
+import Modelo.Curso;
+import Modelo.Materia;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -27,6 +38,72 @@ public class GUI extends javax.swing.JFrame {
         lst_cursos.setModel(dlmCurso);
         lst_grupos.setModel(dlmGrupo);
         lst_materias.setModel(dlmMateria);
+        
+        UtilDOM u = new UtilDOM();
+        Document doc = u.xml2dom("ExportacionGRUPOS-MATERIAS.xml");
+        doc.normalize();
+        Element raiz = doc.getDocumentElement();
+        NodeList listas =  raiz.getElementsByTagName("listasal");
+        
+        List<Node> grupos = new ArrayList();
+        List<Node> materias = new ArrayList();
+        
+
+        for (int i = 0; i < listas.getLength(); i++) {
+            NamedNodeMap nnm = listas.item(i).getAttributes();
+            if (nnm.item(0).getNodeValue().contains("MATERIAS_")) {
+                
+                materias.add(listas.item(i));
+            }
+        }
+        
+        for (int i = 0; i < listas.getLength(); i++) {
+            NamedNodeMap nnm = listas.item(i).getAttributes();
+            if (nnm.item(0).getNodeValue().contains("GRUPOS_")) {
+                
+                grupos.add(listas.item(i));
+            }
+        }
+        
+        for (int i = 0; i < grupos.size(); i++) {
+            Node nNode = grupos.get(i);
+            Curso c = new Curso();
+            boolean otrosDatosAñadidos = false;
+            if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                
+                c.setCodigoCurso(Integer.valueOf(eElement.getElementsByTagName("salida").item(2).getTextContent()));
+                c.setNombre(eElement.getElementsByTagName("salida").item(1).getTextContent());
+                c.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(0).getTextContent()));
+                
+                
+            }
+            for (int j = 0; j < materias.size(); j++) {
+                Node nNodeM = materias.get(j);
+                Materia m = new Materia(); 
+                int codCurso = 0;
+                if(nNodeM.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNodeM;
+                    m.setNombre(eElement.getElementsByTagName("salida").item(0).getTextContent());
+                    m.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(1).getTextContent()));
+                    m.setAbreviatura(eElement.getElementsByTagName("salida").item(2).getTextContent());
+                    codCurso = Integer.valueOf(eElement.getElementsByTagName("salida").item(3).getTextContent());
+                    if (codCurso == c.getCodigoCurso()) {
+                        c.addMaterias(m);
+                        if (!otrosDatosAñadidos) {
+                            c.setDescripcionCurso(eElement.getElementsByTagName("salida").item(4).getTextContent());
+                            c.setDepartamento(eElement.getElementsByTagName("salida").item(6).getTextContent());
+                            c.setAbreviaturaCurso(eElement.getElementsByTagName("salida").item(5).getTextContent());
+                            otrosDatosAñadidos = true;
+                        }
+                    }
+                }
+
+
+            }
+            dlmCurso.addElement(c);
+          
+        }
                
     }
 
@@ -69,6 +146,11 @@ public class GUI extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        lst_cursos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lst_cursosValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(lst_cursos);
 
@@ -138,18 +220,29 @@ public class GUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void lst_cursosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lst_cursosValueChanged
+        refrescarMaterias();
+    }//GEN-LAST:event_lst_cursosValueChanged
+
+    
+    private void refrescarMaterias(){
+        dlmMateria.clear();
+        Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+        dlmMateria.addAll(c.getMaterias());
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
-        
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUI().setVisible(true);
             }
         });
+        
+
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
