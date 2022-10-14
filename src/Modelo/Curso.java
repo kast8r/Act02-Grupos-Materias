@@ -76,7 +76,7 @@ public class Curso {
 
     @Override
     public String toString() {
-        return "Curso{" + "descripcionCurso=" + descripcionCurso + ", abreviatura=" + abreviatura + ", departamento=" + departamento + ", codigoCurso=" + codigoCurso + ", grupos=" + grupos + ", materias=" + materias + '}';
+        return nombre;
     }
 
     public void setMaterias(List<Materia> materias) {

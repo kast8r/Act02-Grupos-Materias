@@ -38,6 +38,61 @@ public class GUI extends javax.swing.JFrame {
         lst_cursos.setModel(dlmCurso);
         lst_grupos.setModel(dlmGrupo);
         lst_materias.setModel(dlmMateria);
+        
+        UtilDOM u = new UtilDOM();
+        Document doc = u.xml2dom("ExportacionGRUPOS-MATERIAS.xml");
+        doc.normalize();
+        Element raiz = doc.getDocumentElement();
+        NodeList listas =  raiz.getElementsByTagName("listasal");
+        
+        List<Node> grupos = new ArrayList();
+        List<Node> materias = new ArrayList();
+        
+
+        for (int i = 0; i < listas.getLength(); i++) {
+            NamedNodeMap nnm = listas.item(i).getAttributes();
+            if (nnm.item(0).getNodeValue().contains("MATERIAS_")) {
+                
+                materias.add(listas.item(i));
+            }
+        }
+        
+        for (int i = 0; i < listas.getLength(); i++) {
+            NamedNodeMap nnm = listas.item(i).getAttributes();
+            if (nnm.item(0).getNodeValue().contains("GRUPOS_")) {
+                
+                grupos.add(listas.item(i));
+            }
+        }
+        
+        for (int i = 0; i < grupos.size(); i++) {
+            Node nNode = grupos.get(i);
+            Curso c = new Curso();
+            if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                
+                c.setCodigoCurso(Integer.valueOf(eElement.getElementsByTagName("salida").item(2).getTextContent()));
+                c.setNombre(eElement.getElementsByTagName("salida").item(1).getTextContent());
+                c.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(0).getTextContent()));
+            }
+            for (int j = 0; j < materias.size(); j++) {
+                Node nNodeM = materias.get(i);
+                Materia m = new Materia(); 
+                if(nNodeM.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNodeM;
+                    m.setNombre(eElement.getElementsByTagName("salida").item(0).getTextContent());
+                    m.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(1).getTextContent()));
+                    m.setAbreviatura(eElement.getElementsByTagName("salida").item(2).getTextContent());
+                }
+                
+            
+            dlmCurso.addElement(c);
+            
+                
+            }
+
+       
+        }
                
     }
 
@@ -153,58 +208,7 @@ public class GUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        UtilDOM u = new UtilDOM();
-        Document doc = u.xml2dom("ExportacionGRUPOS-MATERIAS.xml");
-        doc.normalize();
-        Element raiz = doc.getDocumentElement();
-        NodeList listas =  raiz.getElementsByTagName("listasal");
         
-        List<Node> grupos = new ArrayList();
-        List<Node> materias = new ArrayList();
-        
-
-        for (int i = 0; i < listas.getLength(); i++) {
-            NamedNodeMap nnm = listas.item(i).getAttributes();
-            if (nnm.item(0).getNodeValue().contains("MATERIAS_")) {
-                
-                materias.add(listas.item(i));
-            }
-        }
-        
-        for (int i = 0; i < listas.getLength(); i++) {
-            NamedNodeMap nnm = listas.item(i).getAttributes();
-            if (nnm.item(0).getNodeValue().contains("GRUPOS_")) {
-                
-                grupos.add(listas.item(i));
-            }
-        }
-        
-        for (int i = 0; i < grupos.size(); i++) {
-            Node nNode = grupos.get(i);
-            Curso c = new Curso();
-            if(nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element eElement = (Element) nNode;
-                
-                c.setCodigoCurso(Integer.valueOf(eElement.getElementsByTagName("salida").item(2).getTextContent()));
-                c.setNombre(eElement.getElementsByTagName("salida").item(1).getTextContent());
-                c.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(0).getTextContent()));
-            }
-            for (int j = 0; j < materias.size(); j++) {
-                Node nNodeM = materias.get(i);
-                Materia m = new Materia(); 
-                if(nNodeM.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNodeM;
-                    m.setNombre(eElement.getElementsByTagName("salida").item(0).getTextContent());
-                    m.setClave(Integer.valueOf(eElement.getElementsByTagName("salida").item(1).getTextContent()));
-                    m.setAbreviatura(eElement.getElementsByTagName("salida").item(2).getTextContent());
-                }
-                
-
-                
-            }
-
-            
-        }
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
