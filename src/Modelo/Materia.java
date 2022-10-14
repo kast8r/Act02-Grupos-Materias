@@ -40,7 +40,7 @@ public class Materia {
 
     @Override
     public String toString() {
-        return "Materia{" + "nombre=" + nombre + ", abreviatura=" + abreviatura + ", clave=" + clave + '}';
+        return  nombre ;
     }
     
     

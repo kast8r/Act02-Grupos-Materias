@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,10 +12,19 @@ import java.util.List;
  * @author usumaniana
  */
 public class Curso {
-    String descripcionCurso, abreviatura, departamento, nombre;
+    String descripcionCurso, abreviatura, departamento, nombre, abreviaturaCurso;
     int codigoCurso, clave;
-    List<Grupo> grupos;
-    List<Materia> materias;
+    List<Grupo> grupos = new ArrayList();
+    List<Materia> materias = new ArrayList();
+    
+    public String getAbreviaturaCurso() {
+        return abreviaturaCurso;
+    }
+
+    public void setAbreviaturaCurso(String abreviaturaCurso) {
+        this.abreviaturaCurso = abreviaturaCurso;
+    }
+
 
     public int getClave() {
         return clave;
@@ -76,11 +86,12 @@ public class Curso {
 
     @Override
     public String toString() {
-        return nombre;
+
+        return " " + nombre;
     }
 
-    public void setMaterias(List<Materia> materias) {
-        this.materias = materias;
+    public void addMaterias(Materia materia) {
+        this.materias.add(materia);
     }
 
     public List<Materia> getMaterias() {

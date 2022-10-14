@@ -5246,7 +5246,7 @@
         <salida dato="NOMBRE">Automatismos industriales-1CFGMIEA</salida>
         <salida dato="CLAVE">2785906</salida>
         <salida dato="ABREVIATURA">AIND</salida>
-        <salida dato="CODIGO_CURSO">&lt;106151</salida>
+        <salida dato="CODIGO_CURSO">106151</salida>
         <salida dato="DESCRIPCION_CURSO">1º de CFGM (LOE) - Instalaciones Eléctricas y Automáticas</salida>
         <salida dato="ABREVIATURA_CURSO">1CFGMIEA</salida>
         <salida dato="DEPARTAMENTO">DEPARTAMENTO DE ELECTRICIDAD Y ELECTRÓNI</salida>
