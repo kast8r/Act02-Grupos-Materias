@@ -5,6 +5,7 @@
 package Vista;
 
 import Controlador.UtilDOM;
+import Controlador.UtilFBinario;
 import Modelo.Curso;
 import Modelo.Grupo;
 import Modelo.Materia;
@@ -168,9 +169,9 @@ public class GUI extends javax.swing.JFrame {
         lst_materias = new javax.swing.JList<>();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
-        mn_importar = new javax.swing.JMenuItem();
-        mn_restore = new javax.swing.JMenuItem();
+        mn_import = new javax.swing.JMenuItem();
         mn_save = new javax.swing.JMenuItem();
+        mn_restore = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         jMenu1.setText("File");
@@ -212,15 +213,35 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane3.setViewportView(lst_materias);
 
         jMenu3.setText("Archivo");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
 
-        mn_importar.setText("Importar");
-        jMenu3.add(mn_importar);
-
-        mn_restore.setText("Recuperar");
-        jMenu3.add(mn_restore);
+        mn_import.setText("Importar");
+        mn_import.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_importActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mn_import);
 
         mn_save.setText("Guardar");
+        mn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_saveActionPerformed(evt);
+            }
+        });
         jMenu3.add(mn_save);
+
+        mn_restore.setText("Recuperar");
+        mn_restore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_restoreActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mn_restore);
 
         jMenuBar2.add(jMenu3);
 
@@ -265,15 +286,59 @@ public class GUI extends javax.swing.JFrame {
         refrescarGrupos();
     }//GEN-LAST:event_lst_cursosValueChanged
 
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void mn_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_importActionPerformed
+       dlmCurso.clear();
+        
+    }//GEN-LAST:event_mn_importActionPerformed
+
+    private void mn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_saveActionPerformed
+        UtilFBinario utf1= new UtilFBinario();
+        ArrayList <Curso> cursos= new ArrayList();
+        Curso c1 = new Curso();
+        
+        for (int i = 0; i < dlmCurso.getSize(); i++) {
+            c1 = (Curso) dlmCurso.getElementAt(i);
+            cursos.add(c1);
+            System.out.println(c1);
+            
+        }
+         utf1.guardarObjeto(cursos, "./exportcursos.dat");
+         System.out.println(cursos);
+        
+       
+        
+        
+        
+        
+    }//GEN-LAST:event_mn_saveActionPerformed
+
+    private void mn_restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_restoreActionPerformed
+        UtilFBinario utf1= new UtilFBinario();
+        ArrayList cursos = new ArrayList();
+         
+            cursos.add(utf1.leerObjeto("./exportcursos.dat"));
+            dlmCurso.addElement(cursos);
+        
+        
+    }//GEN-LAST:event_mn_restoreActionPerformed
+
+ 
+    
+    
+    
     private void refrescarGrupos() {
         dlmGrupo.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
         dlmGrupo.addAll(c.getGrupos());
     }
     private void refrescarMaterias(){
-        dlmMateria.clear();
-        Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-        dlmMateria.addAll(c.getMaterias());
+       // dlmMateria.clear();
+        //Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+        //dlmMateria.addAll(c.getMaterias());
     }
     /**
      * @param args the command line arguments
@@ -303,7 +368,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList<String> lst_cursos;
     private javax.swing.JList<String> lst_grupos;
     private javax.swing.JList<String> lst_materias;
-    private javax.swing.JMenuItem mn_importar;
+    private javax.swing.JMenuItem mn_import;
     private javax.swing.JMenuItem mn_restore;
     private javax.swing.JMenuItem mn_save;
     // End of variables declaration//GEN-END:variables
