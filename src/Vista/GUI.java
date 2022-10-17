@@ -15,6 +15,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,6 +49,17 @@ public class GUI extends javax.swing.JFrame {
     
     
     public GUI() {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents();
         dlmCurso = new DefaultListModel();
         dlmGrupo = new DefaultListModel();
@@ -184,13 +200,16 @@ public class GUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btn_bdepart = new javax.swing.JButton();
         btn_buscar = new javax.swing.JButton();
+        btn_exportarBGrupo = new javax.swing.JButton();
+        btn_exportarBDepart = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         mn_import = new javax.swing.JMenuItem();
         mn_save = new javax.swing.JMenuItem();
         mn_restore = new javax.swing.JMenuItem();
         mn_exportarXML = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -227,6 +246,12 @@ public class GUI extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        lst_materias.setToolTipText("Pulsa click derecho para realizar acciones");
+        lst_materias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lst_materiasMouseClicked(evt);
+            }
         });
         jScrollPane3.setViewportView(lst_materias);
 
@@ -268,7 +293,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel2.setText("Buscar por departamento");
 
         btn_bdepart.setBackground(new java.awt.Color(0, 0, 0));
-        btn_bdepart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/icons8_arrow_20px_2.png"))); // NOI18N
+        btn_bdepart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/images/icons8_arrow_20px_2.png"))); // NOI18N
         btn_bdepart.setBorder(null);
         btn_bdepart.setOpaque(false);
         btn_bdepart.addActionListener(new java.awt.event.ActionListener() {
@@ -278,12 +303,32 @@ public class GUI extends javax.swing.JFrame {
         });
 
         btn_buscar.setBackground(new java.awt.Color(0, 0, 0));
-        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/icons8_arrow_20px_2.png"))); // NOI18N
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/images/icons8_arrow_20px_2.png"))); // NOI18N
         btn_buscar.setBorder(null);
         btn_buscar.setOpaque(false);
         btn_buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_buscarActionPerformed(evt);
+            }
+        });
+
+        btn_exportarBGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/images/icons8_xml_file_20px.png"))); // NOI18N
+        btn_exportarBGrupo.setBorderPainted(false);
+        btn_exportarBGrupo.setContentAreaFilled(false);
+        btn_exportarBGrupo.setEnabled(false);
+        btn_exportarBGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exportarBGrupoActionPerformed(evt);
+            }
+        });
+
+        btn_exportarBDepart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/images/icons8_xml_file_20px.png"))); // NOI18N
+        btn_exportarBDepart.setBorderPainted(false);
+        btn_exportarBDepart.setContentAreaFilled(false);
+        btn_exportarBDepart.setEnabled(false);
+        btn_exportarBDepart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exportarBDepartActionPerformed(evt);
             }
         });
 
@@ -328,8 +373,17 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar2.add(jMenu3);
 
-        jMenu4.setText("Edit");
-        jMenuBar2.add(jMenu4);
+        jMenu5.setText("Ventana");
+
+        jMenuItem1.setText("Propiedades");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem1);
+
+        jMenuBar2.add(jMenu5);
 
         setJMenuBar(jMenuBar2);
 
@@ -346,25 +400,30 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jScrollPane2)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_depart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_bdepart)
-                                    .addComponent(btn_buscar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(172, 172, 172)
-                                .addComponent(jLabel1)))
-                        .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txt_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txt_depart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btn_bdepart)
+                                        .addComponent(btn_buscar))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(171, 171, 171)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(150, 150, 150)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_exportarBGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, Short.MAX_VALUE)
+                            .addComponent(btn_exportarBDepart, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_grupo)
-                            .addComponent(btn_depart))
-                        .addGap(79, 79, 79))
+                            .addComponent(btn_depart)
+                            .addComponent(btn_grupo))
+                        .addGap(104, 104, 104))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
@@ -379,22 +438,27 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(btn_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
-                                .addComponent(btn_depart))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(btn_exportarBGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btn_depart)
+                                    .addComponent(btn_exportarBDepart, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(txt_grupo))
-                                .addGap(23, 23, 23)
+                                .addGap(28, 28, 28)
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txt_depart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_bdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_bdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_depart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -453,8 +517,117 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mn_restoreActionPerformed
 
     private void mn_exportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_exportarXMLActionPerformed
+  
+        exportarCursosAXML("F:\\2DAM\\AD\\Act02-Grupos-Materias\\export.xml");
 
+    }//GEN-LAST:event_mn_exportarXMLActionPerformed
+    private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_departActionPerformed
+
+    private void btn_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grupoActionPerformed
+              // TODO add your handling code here:
+    }//GEN-LAST:event_btn_grupoActionPerformed
+
+    private void txt_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_grupoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_grupoActionPerformed
+
+    private void btn_bdepartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bdepartActionPerformed
+        buscarDep();
+        if (!btn_exportarBDepart.isEnabled()) {
+            btn_exportarBDepart.setEnabled(true);
+        }
+    }//GEN-LAST:event_btn_bdepartActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+        buscarGrupos();
+        if (!btn_exportarBGrupo.isEnabled()) {
+            btn_exportarBGrupo.setEnabled(true);
+        }
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
+    private void lst_materiasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lst_materiasMouseClicked
+
+    }//GEN-LAST:event_lst_materiasMouseClicked
+
+    private void btn_exportarBGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportarBGrupoActionPerformed
+        if (dlmCurso.size() > 0) {
+            exportarCursosAXML(generarPanelExportarXML());
+        } else {
+             JOptionPane.showMessageDialog(null, "No hay resultados en la búsqueda filtrada");
+        }
+    }//GEN-LAST:event_btn_exportarBGrupoActionPerformed
+
+    private void btn_exportarBDepartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportarBDepartActionPerformed
+        if (dlmMateria.size() > 0) {
+            exportarMateriasAXML(generarPanelExportarXML());
+        } else {
+             JOptionPane.showMessageDialog(null, "No hay resultados en la búsqueda filtrada");
+        }
+    }//GEN-LAST:event_btn_exportarBDepartActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    /**
+     * Genera un panel para guardar archivos que devuelve una ruta una vez cerrado
+     * @return ruta
+     */
+    private String generarPanelExportarXML() {
+        File archivoAGuardar = null;
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Ruta para exportar XML");   
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            archivoAGuardar = fileChooser.getSelectedFile();
+        }
+        return archivoAGuardar.getAbsolutePath();
+    }
+ 
+
+    /**
+     * Exporta las materias del dlm a la ruta especificada
+     * @param ruta 
+     */
+    private void exportarMateriasAXML(String ruta){
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Materias");
+            doc.appendChild(rootElement);
+            for (int i = 0; i < dlmMateria.size(); i++) {
+                Materia m = (Materia) dlmMateria.get(i);
+                Element elemento1 = doc.createElement("Materia");
+                elemento1.setTextContent(m.getNombre());
+                rootElement.appendChild(elemento1);
+                
+            }
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            
+            StreamResult result = new StreamResult(new File(ruta));
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Exporta los cursos del dlm a la ruta especificada
+     * @param ruta 
+     */
+    private void exportarCursosAXML(String ruta){
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -490,38 +663,16 @@ public class GUI extends javax.swing.JFrame {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             
-            StreamResult result = new StreamResult(new File("F:\\2DAM\\AD\\Act02-Grupos-Materias\\export.xml"));
+            StreamResult result = new StreamResult(new File(ruta));
             transformer.transform(source, result);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }//GEN-LAST:event_mn_exportarXMLActionPerformed
-    private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_departActionPerformed
-
-    private void btn_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grupoActionPerformed
-              // TODO add your handling code here:
-    }//GEN-LAST:event_btn_grupoActionPerformed
-
-    private void txt_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_grupoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_grupoActionPerformed
-
-    private void btn_bdepartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bdepartActionPerformed
-      buscarDep();
-    }//GEN-LAST:event_btn_bdepartActionPerformed
-
-    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
-      buscarGrupos();
-    }//GEN-LAST:event_btn_buscarActionPerformed
-
- 
+    }
+    
     private void buscarGrupos(){
-
         dlmCurso.removeAllElements();
         for (int i = 0; i < listaCursos.size(); i++) { 
             Curso c=listaCursos.get(i); 
@@ -610,15 +761,18 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton btn_bdepart;
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_depart;
+    private javax.swing.JButton btn_exportarBDepart;
+    private javax.swing.JButton btn_exportarBGrupo;
     private javax.swing.JButton btn_grupo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
