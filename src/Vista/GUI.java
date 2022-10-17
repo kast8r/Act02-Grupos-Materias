@@ -47,7 +47,7 @@ public class GUI extends javax.swing.JFrame {
     
 
     /**
-     * 
+     * Devuelve los grupos de un xml que es determinado por el parámetro ruta
      * @param listaGrupos
      * @param ruta 
      */
@@ -329,12 +329,17 @@ public class GUI extends javax.swing.JFrame {
  
     
     
-    
+    /**
+     * Refresca el dlm de grupos una vez que el curso cambie
+     */
     private void refrescarGrupos() {
         dlmGrupo.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
         dlmGrupo.addAll(c.getGrupos());
     }
+    /**
+     * Refresca el dlm de refrescarMaterias una vez que el curso cambie
+     */
     private void refrescarMaterias(){
         dlmMateria.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
