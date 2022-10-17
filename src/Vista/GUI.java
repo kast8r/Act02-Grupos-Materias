@@ -9,9 +9,21 @@ import Controlador.UtilFBinario;
 import Modelo.Curso;
 import Modelo.Grupo;
 import Modelo.Materia;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,7 +59,7 @@ public class GUI extends javax.swing.JFrame {
     
 
     /**
-     * 
+     * Devuelve los grupos de un xml que es determinado por el parámetro ruta
      * @param listaGrupos
      * @param ruta 
      */
@@ -97,6 +109,7 @@ public class GUI extends javax.swing.JFrame {
                         if (c.getCodigoCurso() == codigoCurso) {
                             c.addMaterias(m);
                             listaCursos.set(j, c);
+                            break;
                         } else if  (j == listaCursos.size() -1) {
                             Curso c2 = new Curso();
                             c2.setCodigoCurso(Integer.valueOf(eElement.getElementsByTagName("salida").item(3).getTextContent()));
@@ -114,7 +127,8 @@ public class GUI extends javax.swing.JFrame {
                     c2.setAbreviaturaCurso(eElement.getElementsByTagName("salida").item(5).getTextContent());
                     c2.addMaterias(m);
                     listaCursos.add(c2);
-                }   
+
+                }  
             }
         }
         
@@ -175,6 +189,7 @@ public class GUI extends javax.swing.JFrame {
         mn_import = new javax.swing.JMenuItem();
         mn_save = new javax.swing.JMenuItem();
         mn_restore = new javax.swing.JMenuItem();
+        mn_exportarXML = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         jMenu1.setText("File");
@@ -302,6 +317,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         jMenu3.add(mn_restore);
+
+        mn_exportarXML.setText("Exportar a XML");
+        mn_exportarXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mn_exportarXMLActionPerformed(evt);
+            }
+        });
+        jMenu3.add(mn_exportarXML);
 
         jMenuBar2.add(jMenu3);
 
@@ -435,6 +458,53 @@ public class GUI extends javax.swing.JFrame {
         }      
     }//GEN-LAST:event_mn_restoreActionPerformed
 
+    private void mn_exportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_exportarXMLActionPerformed
+
+            
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Cursos");
+            doc.appendChild(rootElement);
+                
+            for (int i = 0; i < dlmCurso.size(); i++) {
+                
+                Curso c = (Curso) dlmCurso.getElementAt(i);
+                Element elemento1 = doc.createElement("Curso");
+                Attr attr = doc.createAttribute("id");
+                attr.setValue(c.getDescripcionCurso());
+                elemento1.setAttributeNode(attr);
+                rootElement.appendChild(elemento1);
+                
+                Element elemento2 = doc.createElement("Materias");
+                elemento1.appendChild(elemento2);
+                if (!c.getMaterias().isEmpty()) {
+                    for (int j = 0; j < c.getMaterias().size();j++) {
+                    Materia m = c.getMaterias().get(j);
+                    Element elemento3 = doc.createElement("Materia");
+                    elemento3.setTextContent(m.getNombre());
+                    elemento2.appendChild(elemento3);
+                }
+                }
+
+            }
+            
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            
+            StreamResult result = new StreamResult(new File("F:\\2DAM\\AD\\Act02-Grupos-Materias\\export.xml"));
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_mn_exportarXMLActionPerformed
     private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_departActionPerformed
@@ -499,12 +569,17 @@ public class GUI extends javax.swing.JFrame {
     }
     
     
-    
+    /**
+     * Refresca el dlm de grupos una vez que el curso cambie
+     */
     private void refrescarGrupos() {
         dlmGrupo.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
         dlmGrupo.addAll(c.getGrupos());
     }
+    /**
+     * Refresca el dlm de refrescarMaterias una vez que el curso cambie
+     */
     private void refrescarMaterias(){
         dlmMateria.clear();
         Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
@@ -544,6 +619,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList<String> lst_cursos;
     private javax.swing.JList<String> lst_grupos;
     private javax.swing.JList<String> lst_materias;
+    private javax.swing.JMenuItem mn_exportarXML;
     private javax.swing.JMenuItem mn_import;
     private javax.swing.JMenuItem mn_restore;
     private javax.swing.JMenuItem mn_save;
