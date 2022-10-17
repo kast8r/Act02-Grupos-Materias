@@ -13,8 +13,8 @@ import java.util.List;
  * @author usumaniana
  */
 public class Curso implements Serializable {
-    String descripcionCurso, abreviatura, departamento, nombre, abreviaturaCurso;
-    int codigoCurso, clave;
+    String descripcionCurso, abreviaturaCurso ;
+    int codigoCurso;
     List<Grupo> grupos = new ArrayList();
     List<Materia> materias = new ArrayList();
     
@@ -26,35 +26,8 @@ public class Curso implements Serializable {
         this.abreviaturaCurso = abreviaturaCurso;
     }
 
-
-    public int getClave() {
-        return clave;
-    }
-
-    public void setClave(int clave) {
-        this.clave = clave;
-    }
-    
-
-
     public void setDescripcionCurso(String descripcionCurso) {
         this.descripcionCurso = descripcionCurso;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setAbreviatura(String abreviatura) {
-        this.abreviatura = abreviatura;
-    }
-
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
     }
 
     public void setCodigoCurso(int codigoCurso) {
@@ -69,13 +42,7 @@ public class Curso implements Serializable {
         return descripcionCurso;
     }
 
-    public String getAbreviatura() {
-        return abreviatura;
-    }
 
-    public String getDepartamento() {
-        return departamento;
-    }
 
     public int getCodigoCurso() {
         return codigoCurso;
@@ -88,7 +55,7 @@ public class Curso implements Serializable {
     @Override
     public String toString() {
 
-        return " " + nombre;
+        return " " + abreviaturaCurso + " nM: " + materias.size() + " cod: " + codigoCurso + "";
     }
 
     public void addMaterias(Materia materia) {

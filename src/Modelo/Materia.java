@@ -11,8 +11,16 @@ import java.io.Serializable;
  * @author usumaniana
  */
 public class Materia  implements Serializable {
-    String nombre,abreviatura;
+    String nombre,abreviatura, departamento;
     int clave;
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
 
 
 

@@ -12,22 +12,33 @@ import java.io.Serializable;
  */
 public class Grupo  implements Serializable {
     String nombre;
+    int clave;
+
+    public int getClave() {
+        return clave;
+    }
+
+    public void setClave(int clave) {
+        this.clave = clave;
+    }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public Grupo() {
     }
+
 
     @Override
     public String toString() {
         return   nombre;
     }
 
-    public Grupo(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+
     
 }
