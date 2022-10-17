@@ -9,6 +9,7 @@ import Controlador.UtilFBinario;
 import Modelo.Curso;
 import Modelo.Grupo;
 import Modelo.Materia;
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,7 @@ public class GUI extends javax.swing.JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         initComponents();
+        establecerAjustes();
         dlmCurso = new DefaultListModel();
         dlmGrupo = new DefaultListModel();
         dlmMateria = new DefaultListModel();
@@ -72,6 +74,11 @@ public class GUI extends javax.swing.JFrame {
 
                
     }
+    
+    public void establecerAjustes(){
+        getContentPane().setBackground(Color.YELLOW); 
+    }
+    
     
 
     /**
@@ -518,7 +525,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void mn_exportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_exportarXMLActionPerformed
   
-        exportarCursosAXML("F:\\2DAM\\AD\\Act02-Grupos-Materias\\export.xml");
+        exportarCursosAXML(generarPanelExportarXML());
 
     }//GEN-LAST:event_mn_exportarXMLActionPerformed
     private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
@@ -568,7 +575,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_exportarBDepartActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -586,6 +593,12 @@ public class GUI extends javax.swing.JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             archivoAGuardar = fileChooser.getSelectedFile();
         }
+        
+        if (archivoAGuardar == null) {
+            JOptionPane.showMessageDialog(null, "No se ha asignado ninguna ruta");
+            return "";
+        }
+        
         return archivoAGuardar.getAbsolutePath();
     }
  
@@ -595,7 +608,8 @@ public class GUI extends javax.swing.JFrame {
      * @param ruta 
      */
     private void exportarMateriasAXML(String ruta){
-        try {
+        if (!ruta.isBlank()) {
+            try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
@@ -616,11 +630,13 @@ public class GUI extends javax.swing.JFrame {
             
             StreamResult result = new StreamResult(new File(ruta));
             transformer.transform(source, result);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TransformerException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
     }
     
     /**
@@ -628,47 +644,49 @@ public class GUI extends javax.swing.JFrame {
      * @param ruta 
      */
     private void exportarCursosAXML(String ruta){
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            
-            Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("Cursos");
-            doc.appendChild(rootElement);
-                
-            for (int i = 0; i < dlmCurso.size(); i++) {
-                
-                Curso c = (Curso) dlmCurso.getElementAt(i);
-                Element elemento1 = doc.createElement("Curso");
-                Attr attr = doc.createAttribute("id");
-                attr.setValue(c.getDescripcionCurso());
-                elemento1.setAttributeNode(attr);
-                rootElement.appendChild(elemento1);
-                
-                Element elemento2 = doc.createElement("Materias");
-                elemento1.appendChild(elemento2);
-                if (!c.getMaterias().isEmpty()) {
-                    for (int j = 0; j < c.getMaterias().size();j++) {
-                    Materia m = c.getMaterias().get(j);
-                    Element elemento3 = doc.createElement("Materia");
-                    elemento3.setTextContent(m.getNombre());
-                    elemento2.appendChild(elemento3);
-                }
+        if (!ruta.isBlank()) {
+            try {
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                Document doc = docBuilder.newDocument();
+                Element rootElement = doc.createElement("Cursos");
+                doc.appendChild(rootElement);
+
+                for (int i = 0; i < dlmCurso.size(); i++) {
+
+                    Curso c = (Curso) dlmCurso.getElementAt(i);
+                    Element elemento1 = doc.createElement("Curso");
+                    Attr attr = doc.createAttribute("id");
+                    attr.setValue(c.getDescripcionCurso());
+                    elemento1.setAttributeNode(attr);
+                    rootElement.appendChild(elemento1);
+
+                    Element elemento2 = doc.createElement("Materias");
+                    elemento1.appendChild(elemento2);
+                    if (!c.getMaterias().isEmpty()) {
+                        for (int j = 0; j < c.getMaterias().size();j++) {
+                        Materia m = c.getMaterias().get(j);
+                        Element elemento3 = doc.createElement("Materia");
+                        elemento3.setTextContent(m.getNombre());
+                        elemento2.appendChild(elemento3);
+                    }
+                    }
+
                 }
 
+
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+
+                StreamResult result = new StreamResult(new File(ruta));
+                transformer.transform(source, result);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TransformerException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            
-            StreamResult result = new StreamResult(new File(ruta));
-            transformer.transform(source, result);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
