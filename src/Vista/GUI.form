@@ -96,7 +96,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="mn_import">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Importar"/>
+                <Property name="text" type="java.lang.String" value="Importar de XML"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mn_importActionPerformed"/>

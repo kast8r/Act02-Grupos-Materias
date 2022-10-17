@@ -11,6 +11,7 @@ import Modelo.Grupo;
 import Modelo.Materia;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -47,7 +48,7 @@ public class GUI extends javax.swing.JFrame {
     DefaultListModel dlmGrupo;
     DefaultListModel dlmMateria;
     List<Curso> listaCursos = new ArrayList();
-    
+    String rutaPorDefecto;
     
     public GUI() {
         try {
@@ -70,14 +71,100 @@ public class GUI extends javax.swing.JFrame {
         lst_cursos.setModel(dlmCurso);
         lst_grupos.setModel(dlmGrupo);
         lst_materias.setModel(dlmMateria);
+        initDatos();
+    }
 
-
-               
+    /**
+     * Recupera los datos del binario en caso de que exista
+     */
+    public void initDatos(){
+        File f = new File("./exportcursos.dat");
+        if (f.exists()) {
+            recuperarDatosDeBinario(); 
+        }
     }
     
-    public void establecerAjustes(){
-        getContentPane().setBackground(Color.YELLOW); 
+    public void leerAjustes(){
+                UtilDOM u = new UtilDOM();
+                Document doc = u.xml2dom("ajustes.xml");
+                doc.normalize();
+                Element raiz = doc.getDocumentElement();
+                NodeList nl =  raiz.getElementsByTagName("colorVentana");
+                String[] rgb = nl.item(0).getTextContent().split(",");
+                Color c = new Color(Integer.valueOf(rgb[0]),Integer.valueOf(rgb[1]),Integer.valueOf(rgb[2]));
+                getContentPane().setBackground(c); 
+                
+                NodeList nl2 =  raiz.getElementsByTagName("colorBarraSuperior");
+                String[] rgb2 = nl2.item(0).getTextContent().split(",");
+                Color c2 = new Color(Integer.valueOf(rgb2[0]),Integer.valueOf(rgb2[1]),Integer.valueOf(rgb2[2]));
+                jMenuBar2.setBackground(c2); 
+
+                NodeList nl3 =  raiz.getElementsByTagName("colorPaneles");
+                String[] rgb3 = nl3.item(0).getTextContent().split(",");
+                Color c3 = new Color(Integer.valueOf(rgb3[0]),Integer.valueOf(rgb3[1]),Integer.valueOf(rgb3[2]));
+                lst_cursos.setBackground(c3); 
+                lst_grupos.setBackground(c3);
+                lst_materias.setBackground(c3);
+
+                NodeList nl4 =  raiz.getElementsByTagName("rutaPorDefecto");
+                rutaPorDefecto = nl4.item(0).getTextContent();
     }
+    
+    private void establecerAjustesPredeterminados(){
+        try{
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+                    Document doc = docBuilder.newDocument();
+                    Element rootElement = doc.createElement("Ajustes");
+                    doc.appendChild(rootElement);
+
+                    Element elemento1 = doc.createElement("colorVentana");
+                    elemento1.setTextContent("255,210,183");
+                    rootElement.appendChild(elemento1);
+
+                    Element elemento2 = doc.createElement("colorBarraSuperior");
+                    elemento2.setTextContent("96,154,255");
+                    rootElement.appendChild(elemento2);
+
+                    Element elemento3 = doc.createElement("colorPaneles");
+                    elemento3.setTextContent("255,255,255");
+                    rootElement.appendChild(elemento3);
+
+                    Element elemento4 = doc.createElement("rutaPorDefecto");
+                    elemento4.setTextContent(System.getProperty("user.home") + System.getProperty("file.separator")+ "Desktop");
+                    rootElement.appendChild(elemento4);
+
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = transformerFactory.newTransformer();
+                    DOMSource source = new DOMSource(doc);
+
+                    StreamResult result = new StreamResult(new File("ajustes.xml"));
+                        transformer.transform(source, result);
+                    } catch (TransformerConfigurationException ex) {
+                        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (TransformerException ex) {
+                        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParserConfigurationException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+    public void establecerAjustes(){
+            File f = new File("ajustes.xml");
+            if (f.exists()) {
+                leerAjustes();
+ 
+            } else {
+                establecerAjustesPredeterminados();
+                leerAjustes();
+ 
+            }
+    }
+
+ 
+        
+
     
     
 
@@ -404,7 +491,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        mn_import.setText("Importar");
+        mn_import.setText("Importar de XML");
         mn_import.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mn_importActionPerformed(evt);
@@ -549,10 +636,14 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mn_importActionPerformed
 
     private void mn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_saveActionPerformed
-           /**
+        guardarDatosABinario();        
+    }//GEN-LAST:event_mn_saveActionPerformed
+    /**
      *
      *  Guarda los datos en un archivo binario
      */   
+    private void guardarDatosABinario(){
+
         
         UtilFBinario utf1= new UtilFBinario();
         List <Curso> cursos= new ArrayList();
@@ -563,31 +654,38 @@ public class GUI extends javax.swing.JFrame {
             cursos.add(c1);        
         }
           
-          System.out.println(cursos);
           utf1.guardarObjeto(cursos, "./exportcursos.dat");
-          System.out.println(cursos.size());
-        
-        
-        
-    }//GEN-LAST:event_mn_saveActionPerformed
-/**
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
      *
      *  Restaura el archivo de datos binarios de la lista.
      */
-    private void mn_restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_restoreActionPerformed
-      
+   
+    private void recuperarDatosDeBinario(){
         UtilFBinario utf1= new UtilFBinario();
         List <Curso> cursos = new ArrayList();
         Curso c1 = new Curso();   
         
        cursos=(ArrayList) utf1.leerObjeto("./exportcursos.dat");
-        System.out.println(cursos.size());
        
         for (int i = 0; i < cursos.size(); i++) {         
            c1 =  cursos.get(i);
            dlmCurso.addElement(c1);
         
-        }      
+        }     
+    }
+    
+    
+    private void mn_restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_restoreActionPerformed
+        recuperarDatosDeBinario();
+ 
     }//GEN-LAST:event_mn_restoreActionPerformed
 
     private void mn_exportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_exportarXMLActionPerformed
@@ -642,7 +740,8 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_exportarBDepartActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+        Ajustes a = new Ajustes(this,true);
+        a.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
@@ -676,7 +775,7 @@ public class GUI extends javax.swing.JFrame {
     private String generarPanelExportarXML() {
         File archivoAGuardar = null;
 
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser(rutaPorDefecto);
         fileChooser.setDialogTitle("Ruta para exportar XML");   
 
         int userSelection = fileChooser.showSaveDialog(this);
@@ -792,8 +891,6 @@ public class GUI extends javax.swing.JFrame {
             Curso c=listaCursos.get(i); 
             for (int j = 0; j < c.getGrupos().size(); j++) {
                     if (c.getGrupos().get(j).toString().contains(txt_grupo.getText().toUpperCase())){
-                      System.out.println("Coincidencia");
-
                     dlmCurso.addElement(listaCursos.get(i));
                     break;                               
                 }
@@ -842,15 +939,15 @@ public class GUI extends javax.swing.JFrame {
      *  Añade una materia a la lista
      */
     private void añadirItem(){   
-    String materia = JOptionPane.showInputDialog("Escriba aqui la materia a introducir");
-    JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
-    
-    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-    Materia m1 = new Materia();
-    m1.setNombre(materia);
-    c.addMaterias(m1);
-    dlmMateria.addElement(m1);  
-    listaCursos.add(c);
+        String materia = JOptionPane.showInputDialog("Escriba aqui la materia a introducir");
+        JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
+
+        Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+        Materia m1 = new Materia();
+        m1.setNombre(materia);
+        c.addMaterias(m1);
+        dlmMateria.addElement(m1);  
+        listaCursos.add(c);
     }
     
     /**
@@ -858,10 +955,12 @@ public class GUI extends javax.swing.JFrame {
      *  Elimina una materia a la lista
      */
     private void eliminarItem(){
-    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-    Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
-    c.removeMaterias(m1);
-    dlmMateria.removeElement(m1);
+        if (lst_cursos.getSelectedIndex() >= 0 && lst_materias.getSelectedIndex() >= 0) {
+            Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
+            c.removeMaterias(m1);
+            dlmMateria.removeElement(m1);
+        }
     }
     
     /**
@@ -870,16 +969,19 @@ public class GUI extends javax.swing.JFrame {
      */
     
     private void editarItem(){
-     String materia = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir la materia");
-     JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
-     Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-     Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
-     m1.setNombre(materia);
-     c.addMaterias(m1);
+        if (lst_grupos.getSelectedIndex() >= 0 && lst_materias.getSelectedIndex() >= 0) {
+            String materia = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir la materia");
+            JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
+            Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
+            m1.setNombre(materia);
+            c.addMaterias(m1);
      
-        for (int i = 0; i < listaCursos.size(); i++) {
-            listaCursos.set(i, c);
+            for (int i = 0; i < listaCursos.size(); i++) {
+                listaCursos.set(i, c);
+            }
         }
+
      
  
     }
@@ -889,15 +991,17 @@ public class GUI extends javax.swing.JFrame {
      *  Añade un grupo a la lista
      */
     private void añadirGrupo(){   
-    String grupo = JOptionPane.showInputDialog("Escriba aqui el grupo a introducir");
-    JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
-    
-    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-    Grupo g = new Grupo();
-    g.setNombre(grupo);
-    c.addGrupos(g);
-    dlmGrupo.addElement(g);  
-    listaCursos.add(c);
+        if (lst_cursos.getSelectedIndex() >= 0) {
+            String grupo = JOptionPane.showInputDialog("Escriba aqui el grupo a introducir");
+            JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
+
+            Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            Grupo g = new Grupo();
+            g.setNombre(grupo);
+            c.addGrupos(g);
+            dlmGrupo.addElement(g);  
+            listaCursos.add(c);  
+        }
     }
     
     /**
@@ -905,10 +1009,12 @@ public class GUI extends javax.swing.JFrame {
      *  Elimina un grupo de la lista
      */
     private void eliminarGrupo(){
-    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-    Grupo g = (Grupo) dlmGrupo.getElementAt(lst_grupos.getSelectedIndex());
-    c.removeGrupos(g);
-    dlmGrupo.removeElement(g);
+        if (lst_cursos.getSelectedIndex() >= 0 && lst_grupos.getSelectedIndex() >= 0) {
+            Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            Grupo g = (Grupo) dlmGrupo.getElementAt(lst_grupos.getSelectedIndex());
+            c.removeGrupos(g);
+            dlmGrupo.removeElement(g);
+        }
     }
     
     
@@ -917,18 +1023,19 @@ public class GUI extends javax.swing.JFrame {
      *  Edita un grupo de la lista
      */
     private void editarGrupo(){
-       String grupo = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir el grupo");
-     JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
-     Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-     Grupo g = (Grupo) dlmGrupo.getElementAt(lst_materias.getSelectedIndex());
-     g.setNombre(grupo);
-     c.addGrupos(g);
-     
-        for (int i = 0; i < listaCursos.size(); i++) {
-            listaCursos.set(i, c);
+        if (lst_cursos.getSelectedIndex() >= 0 && lst_materias.getSelectedIndex() >=0) {
+            String grupo = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir el grupo");
+            JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
+            Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            Grupo g = (Grupo) dlmGrupo.getElementAt(lst_materias.getSelectedIndex());
+            g.setNombre(grupo);
+            c.addGrupos(g);
+
+            for (int i = 0; i < listaCursos.size(); i++) {
+                listaCursos.set(i, c);
+            }
         }
-    
-    
+
     }
    
     
