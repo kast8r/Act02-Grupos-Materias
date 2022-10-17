@@ -55,7 +55,7 @@ public class Curso implements Serializable {
     @Override
     public String toString() {
 
-        return " " + abreviaturaCurso + " nM: " + materias.size() + " cod: " + codigoCurso + "";
+        return " " + abreviaturaCurso ;
     }
 
     public void addMaterias(Materia materia) {

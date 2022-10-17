@@ -338,13 +338,13 @@ public class GUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,14 +355,11 @@ public class GUI extends javax.swing.JFrame {
                                     .addComponent(btn_bdepart)
                                     .addComponent(btn_buscar)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(150, 150, 150)
-                                        .addComponent(jLabel2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(172, 172, 172)
-                                        .addComponent(jLabel1)))
-                                .addGap(135, 135, 135)))
+                                .addGap(150, 150, 150)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(172, 172, 172)
+                                .addComponent(jLabel1)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_grupo)
@@ -387,22 +384,19 @@ public class GUI extends javax.swing.JFrame {
                                 .addGap(43, 43, 43)
                                 .addComponent(btn_depart))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btn_buscar)
-                                        .addGap(5, 5, 5)))
-                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btn_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(txt_grupo))
+                                .addGap(23, 23, 23)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txt_depart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_bdepart))))
+                                    .addComponent(btn_bdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -527,14 +521,14 @@ public class GUI extends javax.swing.JFrame {
 
  
     private void buscarGrupos(){
-  
-         for (int i = 0; i < listaCursos.size(); i++) { 
-             Curso c=listaCursos.get(i); 
+
+        dlmCurso.removeAllElements();
+        for (int i = 0; i < listaCursos.size(); i++) { 
+            Curso c=listaCursos.get(i); 
             for (int j = 0; j < c.getGrupos().size(); j++) {
-                    System.out.println(c.getGrupos().get(j));
-                    if (c.getGrupos().get(j).toString().equals(txt_grupo.getText())){
+                    if (c.getGrupos().get(j).toString().contains(txt_grupo.getText())){
                       System.out.println("Coincidencia");
-                      dlmCurso.clear();
+
                     dlmCurso.addElement(listaCursos.get(i));
                     break;                               
                 }
@@ -544,28 +538,35 @@ public class GUI extends javax.swing.JFrame {
     
     
     private void buscarDep(){
+        dlmCurso.clear();
+        List<Materia> listaMaterias  = new ArrayList();
+        for (int i = 0; i < listaCursos.size(); i++) {
+            Curso c = listaCursos.get(i);
+            listaMaterias.addAll(c.getMaterias());
+        }
         
-       for (int i = 0; i < listaCursos.size(); i++) { 
-             Curso c=listaCursos.get(i);
-             List <Materia> m = c.getMaterias();
-             
-             for (int j = 0; j < m.size(); j++) {
-                    Materia m1 = m.get(j);
-                    System.out.println(m1.getDepartamento());
-             
-                   if (m1.getDepartamento().equals(txt_depart.getText())){
-                    dlmMateria.clear();
-                    dlmMateria.addElement(m1.getNombre());
-                
-             
-             }
-               
-           }
-         
-       }
+        for (int i = 0; i < listaMaterias.size(); i++) {
+            Materia m  = listaMaterias.get(i);
+            if (m.getDepartamento().contains(txt_depart.getText())) {
+                dlmMateria.addElement(m);
+
+            }
+        }
     
     
     
+    }
+    
+    /**
+     * Limpia todos los dlms
+     */
+    private void limpiarListas(){
+        lst_cursos.setSelectedIndex(-1);
+        lst_grupos.setSelectedIndex(-1);
+        lst_materias.setSelectedIndex(-1);
+        dlmGrupo.clear();
+        dlmMateria.clear();
+        dlmCurso.clear();
     }
     
     
@@ -574,16 +575,21 @@ public class GUI extends javax.swing.JFrame {
      */
     private void refrescarGrupos() {
         dlmGrupo.clear();
-        Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-        dlmGrupo.addAll(c.getGrupos());
+        if(lst_cursos.getSelectedIndex() >= 0) {
+            Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            dlmGrupo.addAll(c.getGrupos()); 
+        }
+
     }
     /**
      * Refresca el dlm de refrescarMaterias una vez que el curso cambie
      */
     private void refrescarMaterias(){
         dlmMateria.clear();
-        Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
-        dlmMateria.addAll(c.getMaterias());
+        if(lst_cursos.getSelectedIndex() >= 0) {
+            Curso c= (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+            dlmMateria.addAll(c.getMaterias());   
+        }
     }
     /**
      * @param args the command line arguments
