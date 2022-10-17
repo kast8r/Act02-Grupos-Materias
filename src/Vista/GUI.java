@@ -186,6 +186,14 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        addItem = new javax.swing.JMenuItem();
+        editItem = new javax.swing.JMenuItem();
+        deleteItem = new javax.swing.JMenuItem();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        addGroup = new javax.swing.JMenuItem();
+        editGroup = new javax.swing.JMenuItem();
+        removeGroup = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         lst_cursos = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -217,6 +225,54 @@ public class GUI extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
+        addItem.setText("Añadir");
+        addItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItemActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(addItem);
+
+        editItem.setText("Editar");
+        editItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editItemActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(editItem);
+
+        deleteItem.setText("Eliminar");
+        deleteItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteItemActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(deleteItem);
+
+        addGroup.setText("Añadir");
+        addGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addGroupActionPerformed(evt);
+            }
+        });
+        jPopupMenu2.add(addGroup);
+
+        editGroup.setText("Editar");
+        editGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editGroupActionPerformed(evt);
+            }
+        });
+        jPopupMenu2.add(editGroup);
+
+        removeGroup.setText("Eliminar");
+        removeGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeGroupActionPerformed(evt);
+            }
+        });
+        jPopupMenu2.add(removeGroup);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -239,6 +295,7 @@ public class GUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        lst_grupos.setComponentPopupMenu(jPopupMenu2);
         jScrollPane2.setViewportView(lst_grupos);
 
         lst_materias.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), "MATERIAS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
@@ -248,6 +305,7 @@ public class GUI extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         lst_materias.setToolTipText("Pulsa click derecho para realizar acciones");
+        lst_materias.setComponentPopupMenu(jPopupMenu1);
         lst_materias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lst_materiasMouseClicked(evt);
@@ -484,7 +542,12 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mn_importActionPerformed
 
     private void mn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_saveActionPerformed
-              UtilFBinario utf1= new UtilFBinario();
+           /**
+     *
+     *  Guarda los datos en un archivo binario
+     */   
+        
+        UtilFBinario utf1= new UtilFBinario();
         List <Curso> cursos= new ArrayList();
         Curso c1 = new Curso();
         
@@ -500,8 +563,12 @@ public class GUI extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_mn_saveActionPerformed
-
+/**
+     *
+     *  Restaura el archivo de datos binarios de la lista.
+     */
     private void mn_restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_restoreActionPerformed
+      
         UtilFBinario utf1= new UtilFBinario();
         List <Curso> cursos = new ArrayList();
         Curso c1 = new Curso();   
@@ -518,7 +585,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void mn_exportarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_exportarXMLActionPerformed
   
-        exportarCursosAXML("F:\\2DAM\\AD\\Act02-Grupos-Materias\\export.xml");
+        exportarCursosAXML("C:\\Users\\Asier\\pene.xml");
 
     }//GEN-LAST:event_mn_exportarXMLActionPerformed
     private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
@@ -570,6 +637,30 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
+      añadirItem();
+    }//GEN-LAST:event_addItemActionPerformed
+
+    private void editItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editItemActionPerformed
+    editarItem();
+    }//GEN-LAST:event_editItemActionPerformed
+
+    private void deleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteItemActionPerformed
+    eliminarItem();        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteItemActionPerformed
+
+    private void addGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGroupActionPerformed
+    añadirGrupo();        // TODO add your handling code here:
+    }//GEN-LAST:event_addGroupActionPerformed
+
+    private void editGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGroupActionPerformed
+    editarGrupo();        // TODO add your handling code here:
+    }//GEN-LAST:event_editGroupActionPerformed
+
+    private void removeGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeGroupActionPerformed
+    eliminarGrupo();
+    }//GEN-LAST:event_removeGroupActionPerformed
 
     /**
      * Genera un panel para guardar archivos que devuelve una ruta una vez cerrado
@@ -672,12 +763,17 @@ public class GUI extends javax.swing.JFrame {
         }
     }
     
+      /**
+     *
+     *  Filtra por grupos  
+     */
     private void buscarGrupos(){
+        
         dlmCurso.removeAllElements();
         for (int i = 0; i < listaCursos.size(); i++) { 
             Curso c=listaCursos.get(i); 
             for (int j = 0; j < c.getGrupos().size(); j++) {
-                    if (c.getGrupos().get(j).toString().contains(txt_grupo.getText())){
+                    if (c.getGrupos().get(j).toString().contains(txt_grupo.getText().toUpperCase())){
                       System.out.println("Coincidencia");
 
                     dlmCurso.addElement(listaCursos.get(i));
@@ -687,7 +783,10 @@ public class GUI extends javax.swing.JFrame {
          }   
     }
     
-    
+     /**
+     *
+     *  Filtra por departamentos
+     */
     private void buscarDep(){
         dlmCurso.clear();
         List<Materia> listaMaterias  = new ArrayList();
@@ -720,6 +819,100 @@ public class GUI extends javax.swing.JFrame {
         dlmCurso.clear();
     }
     
+     /**
+     *
+     *  Añade una materia a la lista
+     */
+    private void añadirItem(){   
+    String materia = JOptionPane.showInputDialog("Escriba aqui la materia a introducir");
+    JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
+    
+    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+    Materia m1 = new Materia();
+    m1.setNombre(materia);
+    c.addMaterias(m1);
+    dlmMateria.addElement(m1);  
+    listaCursos.add(c);
+    }
+    
+    /**
+     *
+     *  Elimina una materia a la lista
+     */
+    private void eliminarItem(){
+    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+    Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
+    c.removeMaterias(m1);
+    dlmMateria.removeElement(m1);
+    }
+    
+    /**
+     *
+     *  Edita una materia a la lista
+     */
+    
+    private void editarItem(){
+     String materia = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir la materia");
+     JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
+     Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+     Materia m1 = (Materia) dlmMateria.getElementAt(lst_materias.getSelectedIndex());
+     m1.setNombre(materia);
+     c.addMaterias(m1);
+     
+        for (int i = 0; i < listaCursos.size(); i++) {
+            listaCursos.set(i, c);
+        }
+     
+ 
+    }
+    
+    /**
+     *
+     *  Añade un grupo a la lista
+     */
+    private void añadirGrupo(){   
+    String grupo = JOptionPane.showInputDialog("Escriba aqui el grupo a introducir");
+    JOptionPane.showMessageDialog(rootPane, "Añadido con exito");   
+    
+    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+    Grupo g = new Grupo();
+    g.setNombre(grupo);
+    c.addGrupos(g);
+    dlmGrupo.addElement(g);  
+    listaCursos.add(c);
+    }
+    
+    /**
+     *
+     *  Elimina un grupo de la lista
+     */
+    private void eliminarGrupo(){
+    Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+    Grupo g = (Grupo) dlmGrupo.getElementAt(lst_grupos.getSelectedIndex());
+    c.removeGrupos(g);
+    dlmGrupo.removeElement(g);
+    }
+    
+    
+    /**
+     *
+     *  Edita un grupo de la lista
+     */
+    private void editarGrupo(){
+       String grupo = JOptionPane.showInputDialog("Escriba el nombre que se usara para sobreescribir el grupo");
+     JOptionPane.showMessageDialog(rootPane, "Editado con exito");  
+     Curso c = (Curso) dlmCurso.getElementAt(lst_cursos.getSelectedIndex());
+     Grupo g = (Grupo) dlmGrupo.getElementAt(lst_materias.getSelectedIndex());
+     g.setNombre(grupo);
+     c.addGrupos(g);
+     
+        for (int i = 0; i < listaCursos.size(); i++) {
+            listaCursos.set(i, c);
+        }
+    
+    
+    }
+   
     
     /**
      * Refresca el dlm de grupos una vez que el curso cambie
@@ -758,12 +951,17 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem addGroup;
+    private javax.swing.JMenuItem addItem;
     private javax.swing.JButton btn_bdepart;
     private javax.swing.JButton btn_buscar;
     private javax.swing.JButton btn_depart;
     private javax.swing.JButton btn_exportarBDepart;
     private javax.swing.JButton btn_exportarBGrupo;
     private javax.swing.JButton btn_grupo;
+    private javax.swing.JMenuItem deleteItem;
+    private javax.swing.JMenuItem editGroup;
+    private javax.swing.JMenuItem editItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -773,6 +971,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -783,6 +983,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_import;
     private javax.swing.JMenuItem mn_restore;
     private javax.swing.JMenuItem mn_save;
+    private javax.swing.JMenuItem removeGroup;
     private javax.swing.JTextField txt_depart;
     private javax.swing.JTextField txt_grupo;
     // End of variables declaration//GEN-END:variables

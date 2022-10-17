@@ -65,6 +65,18 @@ public class Curso implements Serializable {
     public void addGrupos(Grupo grupo) {
         this.grupos.add(grupo);
     }
+    
+    public void removeMaterias(Materia materia) {
+    this.materias.remove(materia);
+    }
+    
+    public void removeGrupos(Grupo grupo) {
+        this.grupos.remove(grupo);
+    }
+    
+    
+    
+    
 
     public List<Materia> getMaterias() {
         return materias;

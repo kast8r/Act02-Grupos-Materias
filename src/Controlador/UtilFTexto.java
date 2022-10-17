@@ -99,17 +99,7 @@ public class UtilFTexto {
     }
     
     
-    public String [][] FicheroTxt2String(String fichero,String separadorLin, String separadorCar){
-    
-    
-    
-    
-    
-    
-    
-    return null;
-    }
-    
+  
     
    
     
