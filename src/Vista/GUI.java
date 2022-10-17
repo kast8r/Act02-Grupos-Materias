@@ -162,6 +162,14 @@ public class GUI extends javax.swing.JFrame {
         lst_grupos = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         lst_materias = new javax.swing.JList<>();
+        txt_depart = new javax.swing.JTextField();
+        btn_grupo = new javax.swing.JButton();
+        btn_depart = new javax.swing.JButton();
+        txt_grupo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btn_bdepart = new javax.swing.JButton();
+        btn_buscar = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         mn_import = new javax.swing.JMenuItem();
@@ -207,6 +215,63 @@ public class GUI extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(lst_materias);
 
+        txt_depart.setToolTipText("Escriba el departamento que desee buscar...");
+        txt_depart.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        txt_depart.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_depart.setName(""); // NOI18N
+        txt_depart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_departActionPerformed(evt);
+            }
+        });
+
+        btn_grupo.setBackground(new java.awt.Color(0, 0, 0));
+        btn_grupo.setBorder(null);
+        btn_grupo.setOpaque(false);
+        btn_grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_grupoActionPerformed(evt);
+            }
+        });
+
+        btn_depart.setBackground(new java.awt.Color(0, 0, 0));
+        btn_depart.setBorder(null);
+        btn_depart.setOpaque(false);
+
+        txt_grupo.setToolTipText("Escriba el grupo que desee buscar...");
+        txt_grupo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        txt_grupo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txt_grupo.setName(""); // NOI18N
+        txt_grupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_grupoActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Buscar por grupo");
+
+        jLabel2.setText("Buscar por departamento");
+
+        btn_bdepart.setBackground(new java.awt.Color(0, 0, 0));
+        btn_bdepart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/icons8_arrow_20px_2.png"))); // NOI18N
+        btn_bdepart.setBorder(null);
+        btn_bdepart.setOpaque(false);
+        btn_bdepart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_bdepartActionPerformed(evt);
+            }
+        });
+
+        btn_buscar.setBackground(new java.awt.Color(0, 0, 0));
+        btn_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/icons8_arrow_20px_2.png"))); // NOI18N
+        btn_buscar.setBorder(null);
+        btn_buscar.setOpaque(false);
+        btn_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_buscarActionPerformed(evt);
+            }
+        });
+
         jMenu3.setText("Archivo");
         jMenu3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,26 +315,72 @@ public class GUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_depart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btn_bdepart)
+                                    .addComponent(btn_buscar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(150, 150, 150)
+                                        .addComponent(jLabel2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(172, 172, 172)
+                                        .addComponent(jLabel1)))
+                                .addGap(135, 135, 135)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_grupo)
+                            .addComponent(btn_depart))
+                        .addGap(79, 79, 79))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(btn_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43)
+                                .addComponent(btn_depart))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_grupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btn_buscar)
+                                        .addGap(5, 5, 5)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txt_depart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btn_bdepart))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -288,29 +399,22 @@ public class GUI extends javax.swing.JFrame {
     private void mn_importActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_importActionPerformed
         dlmCurso.clear();
         listaCursos = getCursosFromXML("ExportacionGRUPOS-MATERIAS.xml");
-        for (int i = 0; i < listaCursos.size(); i++) {
-            Curso c = listaCursos.get(i);
-
-            dlmCurso.addElement(c);
-        }
+        dlmCurso.addAll(listaCursos);
     }//GEN-LAST:event_mn_importActionPerformed
 
     private void mn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_saveActionPerformed
-        UtilFBinario utf1= new UtilFBinario();
-        ArrayList <Curso> cursos= new ArrayList();
+              UtilFBinario utf1= new UtilFBinario();
+        List <Curso> cursos= new ArrayList();
         Curso c1 = new Curso();
         
         for (int i = 0; i < dlmCurso.getSize(); i++) {
             c1 = (Curso) dlmCurso.getElementAt(i);
-            cursos.add(c1);
-            System.out.println(c1);
-            
+            cursos.add(c1);        
         }
-         utf1.guardarObjeto(cursos, "./exportcursos.dat");
-         System.out.println(cursos);
-        
-       
-        //s
+          
+          System.out.println(cursos);
+          utf1.guardarObjeto(cursos, "./exportcursos.dat");
+          System.out.println(cursos.size());
         
         
         
@@ -318,15 +422,81 @@ public class GUI extends javax.swing.JFrame {
 
     private void mn_restoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mn_restoreActionPerformed
         UtilFBinario utf1= new UtilFBinario();
-        ArrayList cursos = new ArrayList();
-         
-            cursos.add(utf1.leerObjeto("./exportcursos.dat"));
-            dlmCurso.addElement(cursos);
+        List <Curso> cursos = new ArrayList();
+        Curso c1 = new Curso();   
         
+       cursos=(ArrayList) utf1.leerObjeto("./exportcursos.dat");
+        System.out.println(cursos.size());
+       
+        for (int i = 0; i < cursos.size(); i++) {         
+           c1 =  cursos.get(i);
+           dlmCurso.addElement(c1);
         
+        }      
     }//GEN-LAST:event_mn_restoreActionPerformed
 
+    private void txt_departActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_departActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_departActionPerformed
+
+    private void btn_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_grupoActionPerformed
+              // TODO add your handling code here:
+    }//GEN-LAST:event_btn_grupoActionPerformed
+
+    private void txt_grupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_grupoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_grupoActionPerformed
+
+    private void btn_bdepartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_bdepartActionPerformed
+      buscarDep();
+    }//GEN-LAST:event_btn_bdepartActionPerformed
+
+    private void btn_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_buscarActionPerformed
+      buscarGrupos();
+    }//GEN-LAST:event_btn_buscarActionPerformed
+
  
+    private void buscarGrupos(){
+  
+         for (int i = 0; i < listaCursos.size(); i++) { 
+             Curso c=listaCursos.get(i); 
+            for (int j = 0; j < c.getGrupos().size(); j++) {
+                    System.out.println(c.getGrupos().get(j));
+                    if (c.getGrupos().get(j).toString().equals(txt_grupo.getText())){
+                      System.out.println("Coincidencia");
+                      dlmCurso.clear();
+                    dlmCurso.addElement(listaCursos.get(i));
+                    break;                               
+                }
+            }
+         }   
+    }
+    
+    
+    private void buscarDep(){
+        
+       for (int i = 0; i < listaCursos.size(); i++) { 
+             Curso c=listaCursos.get(i);
+             List <Materia> m = c.getMaterias();
+             
+             for (int j = 0; j < m.size(); j++) {
+                    Materia m1 = m.get(j);
+                    System.out.println(m1.getDepartamento());
+             
+                   if (m1.getDepartamento().equals(txt_depart.getText())){
+                    dlmMateria.clear();
+                    dlmMateria.addElement(m1.getNombre());
+                
+             
+             }
+               
+           }
+         
+       }
+    
+    
+    
+    }
     
     
     
@@ -356,6 +526,12 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_bdepart;
+    private javax.swing.JButton btn_buscar;
+    private javax.swing.JButton btn_depart;
+    private javax.swing.JButton btn_grupo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -371,5 +547,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mn_import;
     private javax.swing.JMenuItem mn_restore;
     private javax.swing.JMenuItem mn_save;
+    private javax.swing.JTextField txt_depart;
+    private javax.swing.JTextField txt_grupo;
     // End of variables declaration//GEN-END:variables
 }
